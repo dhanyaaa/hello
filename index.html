@@ -99,15 +99,17 @@
                 update([]);
 
                 // Event listener for selection
-                const select = d3.select("#continent-select");
+                const select = d3.selectAll("#continent-select input[type='checkbox']");
                 select.on("change", function () {
-                    const selectedOptions = Array.from(this.selectedOptions).map(option => option.value);
+                    const selectedOptions = Array.from(document.querySelectorAll("#continent-select input:checked"))
+                                     .map(option => option.value);
                     if (selectedOptions.length > 3) {
                         alert("Please select no more than 3 continents at a time.");
                     } else {
                         update(selectedOptions);
                     }
                 });
+
             });
         });
     </script>
