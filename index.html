@@ -35,7 +35,7 @@
                 .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
             // Load the data
-            d3.csv("../data/environmental_data.csv").then(data => {
+            d3.csv("environmental_data.csv").then(data => {
                 // Format the data
                 data.forEach(d => {
                     d.Year = +d.Year;
@@ -95,7 +95,7 @@
                 }
 
                 // Initial chart with no lines
-                update([]);
+                update(["Africa", "Asia"]);
 
                 // Event listener for selection
                 const select = d3.select("#continent-select");
