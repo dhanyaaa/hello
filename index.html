@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Line Chart</title>
+    <title>Interactive Multi-Continent Line Chart</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
     <div>
-        <label for="continent-select">Select Continent:</label>
+        <label for="continent-select">Select Continents (up to 3):</label>
         <select id="continent-select" multiple size="5">
             <option value="Africa">Africa</option>
             <option value="Asia">Asia</option>
@@ -78,7 +78,7 @@
                     const filteredData = data.filter(d => selectedContinents.includes(d.Continent));
 
                     // Nest data by continent
-                    const nestedData = d3.group(filteredData, d => d.Continent);
+                    const nestedData = Array.from(d3.group(filteredData, d => d.Continent));
 
                     // Clear previous lines
                     svg.selectAll(".line").remove();
@@ -95,7 +95,7 @@
                 }
 
                 // Initial chart with no lines
-                update(["Africa", "Asia"]);
+                update([]);
 
                 // Event listener for selection
                 const select = d3.select("#continent-select");
