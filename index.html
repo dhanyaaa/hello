@@ -8,15 +8,16 @@
 </head>
 <body>
     <div>
-        <label for="continent-select">Select Continents (up to 3):</label>
-        <select id="continent-select" multiple size="5">
-            <option value="Africa">Africa</option>
-            <option value="Asia">Asia</option>
-            <option value="Europe">Europe</option>
-            <option value="North America">North America</option>
-            <option value="South America">South America</option>
-        </select>
+        <label>Select Continents (up to 3):</label>
+        <div id="continent-select">
+            <label><input type="checkbox" value="Africa"> Africa</label><br>
+            <label><input type="checkbox" value="Asia"> Asia</label><br>
+            <label><input type="checkbox" value="Europe"> Europe</label><br>
+            <label><input type="checkbox" value="North America"> North America</label><br>
+            <label><input type="checkbox" value="South America"> South America</label>
+        </div>
     </div>
+
     <div id="line_chart"></div>
 
     <script>
