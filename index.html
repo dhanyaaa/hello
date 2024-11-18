@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Line Chart</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+    <div>
+        <label for="continent-select">Select Continent:</label>
+        <select id="continent-select" multiple size="5">
+            <option value="Africa">Africa</option>
+            <option value="Asia">Asia</option>
+            <option value="Europe">Europe</option>
+            <option value="North America">North America</option>
+            <option value="South America">South America</option>
+        </select>
+    </div>
+    <div id="line_chart"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Dimensions and margins of the chart
+            const margin = { top: 50, right: 30, bottom: 50, left: 50 },
+                width = 800 - margin.left - margin.right,
+                height = 500 - margin.top - margin.bottom;
+
+            // Append the SVG element
+            const svg = d3.select("#line_chart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+            // Load the data
+            d3.csv("../data/environmental_data.csv").then(data => {
+                // Format the data
+                data.forEach(d => {
+                    d.Year = +d.Year;
+                    d.Value = +d.Value;
+                });
+
+                // Extract the unique continents
+                const continents = [...new Set(data.map(d => d.Continent))];
+
+                // Scales
+                const x = d3.scaleLinear()
+                    .domain(d3.extent(data, d => d.Year))
+                    .range([0, width]);
+
+                const y = d3.scaleLinear()
+                    .domain([0, d3.max(data, d => d.Value)])
+                    .range([height, 0]);
+
+                // Axes
+                svg.append("g")
+                    .attr("transform", `translate(0, ${height})`)
+                    .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+
+                svg.append("g")
+                    .call(d3.axisLeft(y));
+
+                // Line generator
+                const line = d3.line()
+                    .x(d => x(d.Year))
+                    .y(d => y(d.Value));
+
+                // Color scale
+                const color = d3.scaleOrdinal()
+                    .domain(continents)
+                    .range(d3.schemeTableau10);
+
+                // Update function
+                function update(selectedContinents) {
+                    // Filter data for the selected continents
+                    const filteredData = data.filter(d => selectedContinents.includes(d.Continent));
+
+                    // Nest data by continent
+                    const nestedData = d3.group(filteredData, d => d.Continent);
+
+                    // Clear previous lines
+                    svg.selectAll(".line").remove();
+
+                    // Add lines for each selected continent
+                    svg.selectAll(".line")
+                        .data(nestedData)
+                        .join("path")
+                        .attr("class", "line")
+                        .attr("fill", "none")
+                        .attr("stroke", d => color(d[0]))
+                        .attr("stroke-width", 2)
+                        .attr("d", d => line(d[1]));
+                }
+
+                // Initial chart with no lines
+                update([]);
+
+                // Event listener for selection
+                const select = d3.select("#continent-select");
+                select.on("change", function () {
+                    const selectedOptions = Array.from(this.selectedOptions).map(option => option.value);
+                    if (selectedOptions.length > 3) {
+                        alert("Please select no more than 3 continents at a time.");
+                    } else {
+                        update(selectedOptions);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
