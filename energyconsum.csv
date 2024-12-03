@@ -1,0 +1,43 @@
+Year,Continent,Value
+2010,Asia,196.6
+2015,Asia,229.17
+2020,Asia,257.78
+2021,Asia,272.15
+2022,Asia,278.81
+2023,Asia,291.77
+2010,Africa,15.99
+2015,Africa,18.18
+2020,Africa,18.96
+2021,Africa,20.75
+2022,Africa,20.95
+2023,Africa,20.87
+2010,Europe,88.53
+2015,Europe,84.1
+2020,Europe,79.24
+2021,Europe,83.01
+2022,Europe,79.6
+2023,Europe,77.85
+2010,South America,26.19
+2015,South America,29.53
+2020,South America,26.81
+2021,South America,28.99
+2022,South America,30.37
+2023,South America,31.28
+2010,North America,113.5
+2015,North America,115.14
+2020,North America,109.71
+2021,North America,115.2
+2022,North America,117.9
+2023,North America,116.68
+2010,Independent,35.23
+2015,Independent,36.32
+2020,Independent,37.72
+2021,Independent,39.25
+2022,Independent,40.43
+2023,Independent,40.72
+2010,Middle East,29.33
+2015,Middle East,34.96
+2020,Middle East,36.26
+2021,Middle East,37.27
+2022,Middle East,39.29
+2023,Middle East,40.46
