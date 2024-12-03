@@ -38,7 +38,7 @@
                 .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
             // Load the updated data
-            d3.csv("energyconsum.csv").then(data => {
+            d3.csv("./energyconsum.csv").then(data => {
                 // Format the data
                 data.forEach(d => {
                     d.Year = +d.Year;
