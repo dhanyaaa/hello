@@ -38,13 +38,21 @@
                 .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
             // Load the updated data
-            d3.csv("https://raw.githubusercontent.com/dhanyaaa/hello/main/energyconsum.csv").then(data => {
+          // d3.csv("https://raw.githubusercontent.com/dhanyaaa/hello/main/energyconsum.csv").then(data => {
                 // Format the data
-                data.forEach(d => {
+           /*     data.forEach(d => {
                     d.Year = +d.Year;
                     d.Value = +d.Value;
-                });
+                }); */
 
+                const data = [
+                    { Year: 2010, Continent: "Asia", Value: 196.6 },
+                    { Year: 2015, Continent: "Asia", Value: 229.17 },
+                    { Year: 2020, Continent: "Asia", Value: 257.78 },
+                    { Year: 2021, Continent: "Asia", Value: 272.15 },
+                    { Year: 2022, Continent: "Asia", Value: 278.81 },
+                    { Year: 2023, Continent: "Asia", Value: 291.77 }
+                ];
                 // Extract the unique continents
                 const continents = [...new Set(data.map(d => d.Continent))];
 
