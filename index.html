@@ -33,7 +33,7 @@
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
-                .attr("transform", translate(${margin.left}, ${margin.top}));
+                .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
             // Load the data
             d3.csv("https://raw.githubusercontent.com/dhanyaaa/hello/main/environmental_data.csv").then(data => {
@@ -57,7 +57,7 @@
 
                 // Axes
                 svg.append("g")
-                    .attr("transform", translate(0, ${height}))
+                    .attr("transform", `translate(0, ${height})`)
                     .call(d3.axisBottom(x).tickFormat(d3.format("d")));
 
                 svg.append("g")
@@ -116,4 +116,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
