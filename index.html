@@ -14,7 +14,9 @@
             <label><input type="checkbox" value="Asia"> Asia</label><br>
             <label><input type="checkbox" value="Europe"> Europe</label><br>
             <label><input type="checkbox" value="North America"> North America</label><br>
-            <label><input type="checkbox" value="South America"> South America</label>
+            <label><input type="checkbox" value="South America"> South America</label><br>
+            <label><input type="checkbox" value="Independent"> Independent</label><br>
+            <label><input type="checkbox" value="Middle East"> Middle East</label>
         </div>
     </div>
 
@@ -35,8 +37,8 @@
                 .append("g")
                 .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-            // Load the data
-            d3.csv("https://raw.githubusercontent.com/dhanyaaa/hello/main/environmental_data.csv").then(data => {
+            // Load the updated data
+            d3.csv("energyconsum.csv").then(data => {
                 // Format the data
                 data.forEach(d => {
                     d.Year = +d.Year;
@@ -110,8 +112,6 @@
                         update(selectedOptions);
                     }
                 });
-
-
             });
         });
     </script>
