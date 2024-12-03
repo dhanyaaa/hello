@@ -13,8 +13,6 @@
             <label><input type="checkbox" value="Africa"> Africa</label><br>
             <label><input type="checkbox" value="Asia"> Asia</label><br>
             <label><input type="checkbox" value="Europe"> Europe</label><br>
-            <label><input type="checkbox" value="North America"> North America</label><br>
-            <label><input type="checkbox" value="South America"> South America</label>
         </div>
     </div>
 
@@ -22,12 +20,22 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Dimensions and margins of the chart
+            const data = [
+                { Year: 2010, Continent: "Asia", Value: 196.6 },
+                { Year: 2015, Continent: "Asia", Value: 229.17 },
+                { Year: 2020, Continent: "Asia", Value: 257.78 },
+                { Year: 2010, Continent: "Africa", Value: 15.99 },
+                { Year: 2015, Continent: "Africa", Value: 18.18 },
+                { Year: 2020, Continent: "Africa", Value: 18.96 },
+                { Year: 2010, Continent: "Europe", Value: 88.53 },
+                { Year: 2015, Continent: "Europe", Value: 84.1 },
+                { Year: 2020, Continent: "Europe", Value: 79.24 }
+            ];
+
             const margin = { top: 50, right: 30, bottom: 50, left: 50 },
                 width = 800 - margin.left - margin.right,
                 height = 500 - margin.top - margin.bottom;
 
-            // Append the SVG element
             const svg = d3.select("#line_chart")
                 .append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -35,84 +43,58 @@
                 .append("g")
                 .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-            // Load the data
-            d3.csv("environmental_data.csv").then(data => {
-            d3.csv("https://raw.githubusercontent.com/dhanyaaa/hello/main/environmental_data.csv").then(data => {
-                // Format the data
-                data.forEach(d => {
-                    d.Year = +d.Year;
-                    d.Value = +d.Value;
-                });
+            const continents = [...new Set(data.map(d => d.Continent))];
 
-                // Extract the unique continents
-                const continents = [...new Set(data.map(d => d.Continent))];
+            const x = d3.scaleLinear()
+                .domain(d3.extent(data, d => d.Year))
+                .range([0, width]);
 
-                // Scales
-                const x = d3.scaleLinear()
-                    .domain(d3.extent(data, d => d.Year))
-                    .range([0, width]);
+            const y = d3.scaleLinear()
+                .domain([0, d3.max(data, d => d.Value)])
+                .range([height, 0]);
 
-                const y = d3.scaleLinear()
-                    .domain([0, d3.max(data, d => d.Value)])
-                    .range([height, 0]);
+            svg.append("g")
+                .attr("transform", `translate(0, ${height})`)
+                .call(d3.axisBottom(x).tickFormat(d3.format("d")));
 
-                // Axes
-                svg.append("g")
-                    .attr("transform", `translate(0, ${height})`)
-                    .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+            svg.append("g").call(d3.axisLeft(y));
 
-                svg.append("g")
-                    .call(d3.axisLeft(y));
+            const line = d3.line()
+                .x(d => x(d.Year))
+                .y(d => y(d.Value));
 
-                // Line generator
-                const line = d3.line()
-                    .x(d => x(d.Year))
-                    .y(d => y(d.Value));
+            const color = d3.scaleOrdinal()
+                .domain(continents)
+                .range(d3.schemeTableau10);
 
-                // Color scale
-                const color = d3.scaleOrdinal()
-                    .domain(continents)
-                    .range(d3.schemeTableau10);
+            function update(selectedContinents) {
+                const filteredData = data.filter(d => selectedContinents.includes(d.Continent));
+                const nestedData = Array.from(d3.group(filteredData, d => d.Continent));
 
-                // Update function
-                function update(selectedContinents) {
-                    // Filter data for the selected continents
-                    const filteredData = data.filter(d => selectedContinents.includes(d.Continent));
+                svg.selectAll(".line").remove();
 
-                    // Nest data by continent
-                    const nestedData = Array.from(d3.group(filteredData, d => d.Continent));
+                svg.selectAll(".line")
+                    .data(nestedData)
+                    .join("path")
+                    .attr("class", "line")
+                    .attr("fill", "none")
+                    .attr("stroke", d => color(d[0]))
+                    .attr("stroke-width", 2)
+                    .attr("d", d => line(d[1]));
+            }
 
-                    // Clear previous lines
-                    svg.selectAll(".line").remove();
+            update([]);
 
-                    // Add lines for each selected continent
-                    svg.selectAll(".line")
-                        .data(nestedData)
-                        .join("path")
-                        .attr("class", "line")
-                        .attr("fill", "none")
-                        .attr("stroke", d => color(d[0]))
-                        .attr("stroke-width", 2)
-                        .attr("d", d => line(d[1]));
+            const select = d3.selectAll("#continent-select input[type='checkbox']");
+            select.on("change", function () {
+                const selectedOptions = Array.from(document.querySelectorAll("#continent-select input:checked"))
+                    .map(option => option.value);
+
+                if (selectedOptions.length > 3) {
+                    alert("Please select no more than 3 continents at a time.");
+                } else {
+                    update(selectedOptions);
                 }
-
-                // Initial chart with no lines
-                update([]);
-
-                // Event listener for selection
-                const select = d3.selectAll("#continent-select input[type='checkbox']");
-                select.on("change", function () {
-                    // Get selected continents
-                    const selectedOptions = Array.from(document.querySelectorAll("#continent-select input:checked"))
-                                                 .map(option => option.value);
-                    if (selectedOptions.length > 3) {
-                        alert("Please select no more than 3 continents at a time.");
-                    } else {
-                        update(selectedOptions);
-                    }
-                });
-
-
             });
         });
     </script>
