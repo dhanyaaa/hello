@@ -36,7 +36,8 @@
                 .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
             // Load the data
-            d3.csv("https://raw.githubusercontent.com/dhanyaaa/hello/blob/main/environmental_data.csv").then(data => {
+            d3.csv("environmental_data.csv").then(data => {
+            d3.csv("https://raw.githubusercontent.com/dhanyaaa/hello/main/environmental_data.csv").then(data => {
                 // Format the data
                 data.forEach(d => {
                     d.Year = +d.Year;
