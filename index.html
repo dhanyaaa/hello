@@ -35,8 +35,9 @@
                 .append("g")
                 .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-            // Use hosted or locally served CSV file
-            d3.csv("energyconsum.csv").then(data => {
+            // Load the CSV data
+            d3.csv("./energyconsum.csv").then(data => {
+                console.log(data); // Debug: Check if the data is loaded correctly
                 data.forEach(d => {
                     d.Year = +d.Year;
                     d.Value = +d.Value;
